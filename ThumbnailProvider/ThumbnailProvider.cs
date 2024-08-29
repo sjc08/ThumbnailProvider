@@ -109,7 +109,9 @@ namespace Asjc.ThumbnailProvider
             public byte rgbReserved;
         }
 
-        public static Bitmap GetThumbnail(string fileName, int width, int height, ThumbnailOptions options)
+        public static Bitmap GetThumbnail(string fileName, int size = 256, ThumbnailOptions options = ThumbnailOptions.None) => GetThumbnail(fileName, size, size, options);
+
+        public static Bitmap GetThumbnail(string fileName, int width, int height, ThumbnailOptions options = ThumbnailOptions.None)
         {
             IntPtr hBitmap = GetHBitmap(Path.GetFullPath(fileName), width, height, options);
 
