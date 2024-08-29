@@ -137,9 +137,9 @@ namespace Asjc.ThumbnailProvider
 
         public static Bitmap CreateAlphaBitmap(Bitmap srcBitmap, PixelFormat targetPixelFormat)
         {
-            Bitmap result = new Bitmap(srcBitmap.Width, srcBitmap.Height, targetPixelFormat);
+            Bitmap result = new(srcBitmap.Width, srcBitmap.Height, targetPixelFormat);
 
-            Rectangle bmpBounds = new Rectangle(0, 0, srcBitmap.Width, srcBitmap.Height);
+            Rectangle bmpBounds = new(0, 0, srcBitmap.Width, srcBitmap.Height);
 
             BitmapData srcData = srcBitmap.LockBits(bmpBounds, ImageLockMode.ReadOnly, srcBitmap.PixelFormat);
 
@@ -180,19 +180,19 @@ namespace Asjc.ThumbnailProvider
 
         private static IntPtr GetHBitmap(string fileName, int width, int height, ThumbnailOptions options)
         {
-            IShellItem nativeShellItem;
-            Guid shellItem2Guid = new Guid(IShellItem2Guid);
-            int retCode = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out nativeShellItem);
+            Guid shellItem2Guid = new(IShellItem2Guid);
+            int retCode = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out IShellItem nativeShellItem);
 
             if (retCode != 0)
                 throw Marshal.GetExceptionForHR(retCode);
 
-            NativeSize nativeSize = new NativeSize();
-            nativeSize.Width = width;
-            nativeSize.Height = height;
+            NativeSize nativeSize = new()
+            {
+                Width = width,
+                Height = height
+            };
 
-            IntPtr hBitmap;
-            HResult hr = ((IShellItemImageFactory)nativeShellItem).GetImage(nativeSize, options, out hBitmap);
+            HResult hr = ((IShellItemImageFactory)nativeShellItem).GetImage(nativeSize, options, out IntPtr hBitmap);
 
             Marshal.ReleaseComObject(nativeShellItem);
 
