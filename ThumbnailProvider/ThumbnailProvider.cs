@@ -78,9 +78,9 @@ namespace Asjc.ThumbnailProvider
             AccessDenied = unchecked((int)0x80030005)
         }
 
-        [ComImportAttribute()]
-        [GuidAttribute("bcc18b79-ba16-442f-80c4-8a59c30c463b")]
-        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        [ComImport()]
+        [Guid("bcc18b79-ba16-442f-80c4-8a59c30c463b")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         internal interface IShellItemImageFactory
         {
             [PreserveSig]
@@ -129,9 +129,9 @@ namespace Asjc.ThumbnailProvider
 
         public static Bitmap GetBitmapFromHBitmap(IntPtr nativeHBitmap)
         {
-            Bitmap bmp = Bitmap.FromHbitmap(nativeHBitmap);
+            Bitmap bmp = Image.FromHbitmap(nativeHBitmap);
 
-            if (Bitmap.GetPixelFormatSize(bmp.PixelFormat) < 32)
+            if (Image.GetPixelFormatSize(bmp.PixelFormat) < 32)
                 return bmp;
 
             return CreateAlphaBitmap(bmp, PixelFormat.Format32bppArgb);
