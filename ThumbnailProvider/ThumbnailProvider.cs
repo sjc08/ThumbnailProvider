@@ -115,7 +115,7 @@ namespace Asjc.ThumbnailProvider
 
         public static Bitmap GetThumbnail(string fileName, int width, int height, ThumbnailOptions options = ThumbnailOptions.None)
         {
-            IntPtr hBitmap = GetHThumbnail(Path.GetFullPath(fileName), width, height, options);
+            IntPtr hBitmap = GetHThumbnail(fileName, width, height, options);
 
             try
             {
@@ -136,7 +136,7 @@ namespace Asjc.ThumbnailProvider
         public static IntPtr GetHThumbnail(string fileName, int width, int height, ThumbnailOptions options = ThumbnailOptions.None)
         {
             Guid shellItem2Guid = new(IShellItem2Guid);
-            int retCode = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out IShellItem nativeShellItem);
+            int retCode = SHCreateItemFromParsingName(Path.GetFullPath(fileName), IntPtr.Zero, ref shellItem2Guid, out IShellItem nativeShellItem);
 
             if (retCode != 0)
                 throw Marshal.GetExceptionForHR(retCode);
