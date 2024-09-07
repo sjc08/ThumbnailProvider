@@ -115,7 +115,7 @@ namespace Asjc.ThumbnailProvider
 
         public static Bitmap GetThumbnail(string fileName, int width, int height, ThumbnailOptions options = ThumbnailOptions.None)
         {
-            IntPtr hBitmap = GetHBitmap(Path.GetFullPath(fileName), width, height, options);
+            IntPtr hBitmap = GetHThumbnail(Path.GetFullPath(fileName), width, height, options);
 
             try
             {
@@ -127,6 +127,33 @@ namespace Asjc.ThumbnailProvider
                 // delete HBitmap to avoid memory leaks
                 DeleteObject(hBitmap);
             }
+        }
+
+        public static IntPtr GetHThumbnail(string fileName, ThumbnailOptions options = ThumbnailOptions.None) => GetHThumbnail(fileName, 256, options);
+
+        public static IntPtr GetHThumbnail(string fileName, int size, ThumbnailOptions options = ThumbnailOptions.None) => GetHThumbnail(fileName, size, size, options);
+
+        public static IntPtr GetHThumbnail(string fileName, int width, int height, ThumbnailOptions options = ThumbnailOptions.None)
+        {
+            Guid shellItem2Guid = new(IShellItem2Guid);
+            int retCode = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out IShellItem nativeShellItem);
+
+            if (retCode != 0)
+                throw Marshal.GetExceptionForHR(retCode);
+
+            NativeSize nativeSize = new()
+            {
+                Width = width,
+                Height = height
+            };
+
+            HResult hr = ((IShellItemImageFactory)nativeShellItem).GetImage(nativeSize, options, out IntPtr hBitmap);
+
+            Marshal.ReleaseComObject(nativeShellItem);
+
+            if (hr == HResult.Ok) return hBitmap;
+
+            throw Marshal.GetExceptionForHR((int)hr);
         }
 
         public static Bitmap GetBitmapFromHBitmap(IntPtr nativeHBitmap)
@@ -180,29 +207,6 @@ namespace Asjc.ThumbnailProvider
             {
                 return srcBitmap;
             }
-        }
-
-        private static IntPtr GetHBitmap(string fileName, int width, int height, ThumbnailOptions options)
-        {
-            Guid shellItem2Guid = new(IShellItem2Guid);
-            int retCode = SHCreateItemFromParsingName(fileName, IntPtr.Zero, ref shellItem2Guid, out IShellItem nativeShellItem);
-
-            if (retCode != 0)
-                throw Marshal.GetExceptionForHR(retCode);
-
-            NativeSize nativeSize = new()
-            {
-                Width = width,
-                Height = height
-            };
-
-            HResult hr = ((IShellItemImageFactory)nativeShellItem).GetImage(nativeSize, options, out IntPtr hBitmap);
-
-            Marshal.ReleaseComObject(nativeShellItem);
-
-            if (hr == HResult.Ok) return hBitmap;
-
-            throw Marshal.GetExceptionForHR((int)hr);
         }
     }
 }
