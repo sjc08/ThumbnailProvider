@@ -31,7 +31,7 @@ namespace Asjc.ThumbnailProvider
 
         [DllImport("gdi32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool DeleteObject(IntPtr hObject);
+        public static extern bool DeleteObject(IntPtr hObject);
 
         [ComImport]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
