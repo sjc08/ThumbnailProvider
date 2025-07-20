@@ -6,6 +6,9 @@ namespace Asjc.ThumbnailProvider
 {
     // Based on https://stackoverflow.com/questions/21751747
 
+    /// <summary>
+    /// Provides options for extracting file thumbnails.
+    /// </summary>
     [Flags]
     public enum ThumbnailOptions
     {
@@ -17,7 +20,10 @@ namespace Asjc.ThumbnailProvider
         InCacheOnly = 0x10,
     }
 
-    public class ThumbnailProvider
+    /// <summary>
+    /// Provides the function of extracting thumbnails from files.
+    /// </summary>
+    public static class ThumbnailProvider
     {
         private const string IShellItem2Guid = "7E9FB0D3-919F-4307-AB2E-9B1860310C93";
 
