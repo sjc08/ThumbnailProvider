@@ -21,7 +21,7 @@ namespace Asjc.ThumbnailProvider
     }
 
     /// <summary>
-    /// Provides the function of extracting thumbnails from files.
+    /// Provides functionality to extract thumbnails from files.
     /// </summary>
     public static class ThumbnailProvider
     {
