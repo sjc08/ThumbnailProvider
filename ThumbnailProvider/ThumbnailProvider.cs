@@ -180,20 +180,20 @@ namespace Asjc.ThumbnailProvider
 
             BitmapData srcData = srcBitmap.LockBits(bmpBounds, ImageLockMode.ReadOnly, srcBitmap.PixelFormat);
 
-            bool isAlplaBitmap = false;
+            bool isAlphaBitmap = false;
 
             try
             {
-                for (int y = 0; y <= srcData.Height - 1; y++)
+                for (int y = 0; y < srcData.Height; y++)
                 {
-                    for (int x = 0; x <= srcData.Width - 1; x++)
+                    for (int x = 0; x < srcData.Width; x++)
                     {
                         Color pixelColor = Color.FromArgb(
                             Marshal.ReadInt32(srcData.Scan0, (srcData.Stride * y) + (4 * x)));
 
-                        if (pixelColor.A > 0 & pixelColor.A < 255)
+                        if (pixelColor.A > 0 && pixelColor.A < 255)
                         {
-                            isAlplaBitmap = true;
+                            isAlphaBitmap = true;
                         }
 
                         result.SetPixel(x, y, pixelColor);
@@ -205,7 +205,7 @@ namespace Asjc.ThumbnailProvider
                 srcBitmap.UnlockBits(srcData);
             }
 
-            if (isAlplaBitmap)
+            if (isAlphaBitmap)
             {
                 return result;
             }

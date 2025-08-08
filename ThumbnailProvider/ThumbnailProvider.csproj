@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.3.4</Version>
+    <Version>1.3.5</Version>
     <Authors>AlexSJC</Authors>
     <Description>Extract thumbnails from files.</Description>
     <Copyright>Copyright © $(Authors) $([System.DateTime]::Now.Year)</Copyright>
